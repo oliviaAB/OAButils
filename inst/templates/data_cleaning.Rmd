@@ -1,0 +1,16 @@
+# Data cleaning
+
+Importing raw data:
+
+```{targets data_file}
+tar_target(data_file, here("data/airquality.csv"), format = "file")
+```
+
+```{targets raw_data, tar_simple = TRUE}
+read_csv(data_file)
+```
+
+```{targets hist, tar_simple = TRUE}
+create_plot(raw_data)
+```
+

@@ -1,0 +1,96 @@
+---
+title: 'Data Science Technical Report template'
+author: 'Olivia Angelin-Bonnet'
+date: 'Last edited: `r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE,
+                      results = "hide")
+
+library(targets)
+
+tar_unscript()
+```
+
+```{targets set-globals, tar_globals = TRUE}
+library(tarchetypes)
+library(here)
+
+## Turning off starting tidyverse message
+options(tidyverse.quiet = TRUE)
+
+## Making sure renv lock file is up-to-date
+renv::snapshot()
+
+## Packages used in the pipeline
+tar_option_set(packages = c("here",
+                            "rmarkdown",
+                            "readr", 
+                            "dplyr",
+                            "tidyr",
+                            "stringr",
+                            "ggplot2"))
+
+## Setting global options for ggplot
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(plot.title = ggplot2::element_text(hjust = 0.5))
+ggplot2::theme_update(legend.position = "bottom")
+```
+
+
+# Helper functions
+
+```{targets globals-create_plot, tar_globals = TRUE}
+create_plot <- function(data) {
+  ggplot(data) +
+    geom_histogram(aes(x = Ozone), bins = 12)+
+    labs(x = "coucou")
+}
+```
+
+
+<!-- Include sections -->
+
+```{r include-sections, child = c('data_cleaning.Rmd')}
+
+```
+
+# Rendering reports and target files
+
+```{targets make-technical-report}
+tar_render(tech_report_html,
+           here("make_targets_pipeline.Rmd"),
+           output_format = html_document(theme = "bootstrap",
+                                         toc = TRUE,
+                                         toc_float = TRUE),
+           output_file = "output/technical_report.html")
+```
+
+```{targets make-results-report-md}
+tar_render(results_report_md,
+           here("reports/results.Rmd"),
+           output_format = github_document(toc = TRUE),
+           output_file = here("output/results.md"))
+```
+
+```{targets make-results-report-html}
+tar_render(results_report_html,
+           here("reports/results.Rmd"),
+           output_format = html_document(theme = "bootstrap",
+                                         toc = TRUE,
+                                         toc_float = TRUE),
+           output_file = here("output/results.html"))
+```
+
+
+
+`r ifelse(knitr::is_html_output(), "# Pipeline visualisation", "")`
+
+```{r tar-glimpse, eval = knitr::is_html_output(), echo = knitr::is_html_output(), results = TRUE}
+tar_glimpse()
+```
+

@@ -1,12 +1,18 @@
 Package: OAButils
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Useful Functions for Data Science
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person("Olivia", "Angelin-Bonnet", email = "olivia.angelinbonnet@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7708-2919")))
+Maintainer: Olivia Angelin <olivia.angelinbonnet@gmail.com>
+Description: A compilation of functions that I find useful in day-to-day data science projects.
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-URL: https://oliviaab.github.io/OAButils/
+URL: https://oliviaab.github.io/OAButils/, https://github.com/oliviaAB/OAButils
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    xfun
+RoxygenNote: 7.2.0

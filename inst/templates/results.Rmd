@@ -1,0 +1,32 @@
+---
+title: "Project report template"
+author: "Olivia Angelin-Bonnet"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  github_document:
+    toc: TRUE
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.align = 'center',
+                      out.width = '\\linewidth',
+                      fig.width = 12,
+                      fig.height = 8)
+
+options(tidyverse.quiet = TRUE)
+
+library(targets)
+library(ggplot2)
+```
+
+```{r set-ggplot2-options, cache = FALSE}
+theme_set(theme_bw())
+theme_update(plot.title = element_text(hjust = 0.5))
+theme_update(legend.position = "bottom")
+```
+
+```{r show-hist}
+tar_read(hist)
+```
+

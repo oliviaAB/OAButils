@@ -1,0 +1,10 @@
+## R files
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+
+data/
+
+## Ignore _targets output
+_targets/
