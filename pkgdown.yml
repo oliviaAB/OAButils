@@ -1,8 +1,9 @@
 pandoc: 2.7.3
 pkgdown: 2.0.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2022-05-22T10:42Z
+articles:
+  create_project_folder: create_project_folder.html
+last_built: 2022-05-25T10:30Z
 urls:
   reference: https://oliviaab.github.io/OAButils/reference
   article: https://oliviaab.github.io/OAButils/articles
