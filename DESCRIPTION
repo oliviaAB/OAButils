@@ -11,8 +11,11 @@ Encoding: UTF-8
 LazyData: true
 URL: https://oliviaab.github.io/OAButils/, https://github.com/oliviaAB/OAButils
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
     xfun
 RoxygenNote: 7.2.0
+VignetteBuilder: knitr
