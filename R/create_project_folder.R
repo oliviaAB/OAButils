@@ -29,6 +29,8 @@ create_project_folder <- function(path = ".", verbose = TRUE){
 
   ## Create folders
   dir.create(paste0(path, "data/"))
+  dir.create(paste0(path, "data/raw/"))
+  dir.create(paste0(path, "data/processed/"))
   dir.create(paste0(path, "output/"))
   dir.create(paste0(path, "reports/"))
   if(verbose) message("Created folders 'data/', 'outputs/' and 'reports/'...")

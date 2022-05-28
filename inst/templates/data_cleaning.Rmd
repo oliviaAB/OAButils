@@ -3,7 +3,7 @@
 Importing raw data:
 
 ```{targets data_file}
-tar_target(data_file, here("data/airquality.csv"), format = "file")
+tar_target(data_file, here("data/raw/airquality.csv"), format = "file")
 ```
 
 ```{targets raw_data, tar_simple = TRUE}

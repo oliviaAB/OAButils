@@ -6,6 +6,8 @@ test_that("create_project_folder() works", {
   expect_error(create_project_folder(dir, verbose = FALSE), regexp = NA)
 
   expect_true(dir.exists(paste0(dir, "/data")))
+  expect_true(dir.exists(paste0(dir, "/data/raw")))
+  expect_true(dir.exists(paste0(dir, "/data/processed")))
   expect_true(dir.exists(paste0(dir, "/output")))
   expect_true(dir.exists(paste0(dir, "/reports")))
 

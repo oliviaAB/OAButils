@@ -1,5 +1,5 @@
 ---
-title: "Template Data Science project directory"
+title: "Template Data Science project directory- in progress"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{create_project_folder}
@@ -24,17 +24,17 @@ The goal of this function is to provide an easy way to set up a directory for a 
 
 The template set-up created answers the following needs:
 
-* Use of the `targets` package, to create a reproducible analysis pipeline. 
-* Benefit from all the advantages RMarkdown documents offer, through literate programming.
-* Automatically update reports and presentations when the analysis is changed.
+-   Use of the `targets` package, to create a reproducible analysis pipeline.
+-   Benefit from all the advantages RMarkdown documents offer, through literate programming.
+-   Automatically update reports and presentations when the analysis is changed.
 
 ## How to use the function
 
 We assume that:
 
-* The folder is the top level of a RStudio project;
-* The folder will be version-controlled through git;
-* The `renv` package will be used for this project.
+-   The folder is the top level of a RStudio project;
+-   The folder will be version-controlled through git;
+-   The `renv` package will be used for this project.
 
 ## The template directory
 
@@ -44,15 +44,15 @@ The function creates three folders:
 
 #### `data/` folder
 
-This is where the raw data should go. It is preferable that raw data is stored in a separate folder, so that there is less chance to accidentally mess up with the data during the analysis. This folder should only be used when reading in the raw data, and should not be used to store any output from the pipeline, even cleaned up versions of the datasets (these should go into the `output/` folder).
+This folder is, as its name suggest, a place to keep data files. It is populated by two sub-folders, `raw/` and `processed/`. This partition reflects the fact that often in data science projects, raw data must first be cleaned before being able to start the analysis. The `raw/` subfolder is where the input data should go. It is preferable that raw data is stored in a separate folder, so that there is less chance to accidentally mess up with the data during the analysis. This folder should only be used when reading in the raw data, and should not be used to store any output from the pipeline. The cleaned up versions of the datasets should go into the `processed/` subfolder. These should be the files that you want to share with collaborators who want to reproduce the analysis.
 
 #### `output/` folder
 
-This folder should be used to store any output from the analysis pipeline, from clean version of the data, graphs, to rendered reports. This makes it easy for any collaborator to access the output from the analysis, rather than having to look through different folders. In addition, if the folder is deleted, everything should be reproduced by running the analysis pipeline.
+This folder should be used to store any output from the analysis pipeline, from graphs, to rendered reports. This makes it easy for any collaborator to access the output from the analysis, rather than having to look through different folders. In addition, if the folder is deleted, everything should be reproduced by running the analysis pipeline.
 
 #### `reports/` folder
 
-The `reports/` folder is for storing the different RMarkdown documents that will be used to generate reports, presentations, etc. It is useful to have them in a separate folder to avoid cluttering the main directory. It is recommended that the rendered versions of the reports be saved in the `output/` folder rather than in this folder. 
+The `reports/` folder is for storing the different RMarkdown documents that will be used to generate reports, presentations, etc. It is useful to have them in a separate folder to avoid cluttering the main directory. It is recommended that the rendered versions of the reports be saved in the `output/` folder rather than in this folder.
 
 ### The master file
 
@@ -62,18 +62,16 @@ The philosophy of this template is to use `targets` to build a reproducible pipe
 
 The Target Markdown file starts with the following header:
 
-```
----
-title: 'Data Science Technical Report template'
-author: 'Olivia Angelin-Bonnet'
-date: 'Last edited: `r format(Sys.Date(), "%B %d, %Y")`'
-output: 
-  github_document:
-    toc: true
----
-```
+    ---
+    title: 'Data Science Technical Report template'
+    author: 'Olivia Angelin-Bonnet'
+    date: 'Last edited: `r format(Sys.Date(), "%B %d, %Y")`'
+    output: 
+      github_document:
+        toc: true
+    ---
 
-The default output format is a `.md` file, which is very convenient as it is readable directly in GitHub. The date is automatically set to the current day, which is useful to see when it was last updated.
+The default output format is a `.md` file, which is very convenient as it is readable directly in GitHub. This is the one exception to the 'all rendered reports should go in the processed folder'. The date is automatically set to the current day, which is useful to see when it was last updated.
 
 The first code chunk is the usual set-up chunk, which sets the global `knitr` chunk options. In particular, the `results` options is set to `"hide"`. This is because, when rendered, the output of a `targets` chunk is not really informative, so hiding it gives a cleaner report. In this first setup chunk, the `targets` package is also loaded, and removes the previous instance of the ... through a call to `tar_unscript()`. This ensures that any target that was removed in the Target Markdown will not be present in the pipeline.
 
@@ -81,45 +79,104 @@ The first code chunk is the usual set-up chunk, which sets the global `knitr` ch
 
 The next code chunk defines the globals of the targets pipeline, i.e. any code that would be present at the top of the `_targets.R` file, before defining the list of targets. This is the first `targets` chunk, and the option `tar_globals` is set to `TRUE` to indicate that we are not defining a new target, but rather code that must be executed before running the pipeline.
 
-````
-`r ''````{targets set-globals, tar_globals = TRUE}
-library(tarchetypes)
-library(here)
+    `r ''````{targets set-globals, tar_globals = TRUE}
+    library(tarchetypes)
+    library(here)
 
-## Turning off starting tidyverse message
-options(tidyverse.quiet = TRUE)
+    ## Turning off starting tidyverse message
+    options(tidyverse.quiet = TRUE)
 
-## Making sure renv lock file is up-to-date
-renv::snapshot()
+    ## Making sure renv lock file is up-to-date
+    renv::snapshot()
 
-## Packages used in the pipeline
-tar_option_set(packages = c("here",
-                            "rmarkdown",
-                            "readr", 
-                            "dplyr",
-                            "tidyr",
-                            "stringr",
-                            "ggplot2"))
+    ## Packages used in the pipeline
+    tar_option_set(packages = c("here",
+                                "rmarkdown",
+                                "readr", 
+                                "dplyr",
+                                "tidyr",
+                                "stringr",
+                                "ggplot2"))
 
-## Setting global options for ggplot
-ggplot2::theme_set(ggplot2::theme_bw())
-ggplot2::theme_update(plot.title = ggplot2::element_text(hjust = 0.5))
-ggplot2::theme_update(legend.position = "bottom")
-```
-````
+    ## Setting global options for ggplot
+    ggplot2::theme_set(ggplot2::theme_bw())
+    ggplot2::theme_update(plot.title = ggplot2::element_text(hjust = 0.5))
+    ggplot2::theme_update(legend.position = "bottom")
+    ```
 
 After loading the `targets` and `tarchetypes` packages (the latter necessary for rendering Rmarkdown documents in the targets pipeline), and suppressing the tidyverse startup message, the pipeline will make a call to `renv::snapshot()`. This ensures that we get an accurate representation of the packages dependencies at the time of running the pipeline. Then, the different packages to be used in the pipeline are listed, and some global options are set for all `ggplot2` graphs that will be generated by the pipeline.
 
 #### Listing helper functions
 
-In a classic `targets` pipeline, it is recommended to save any custom functions created in files stored in the `R/` folder, and then source these files at the top of the `_targets.R` file. This the rendered version of this Target Markdown acts as a technical report, it is useful to display here the code of these functions. This is the use of the 'Helper functions' section in the Target Markdown. Again, the target chunks in this sections define globals for the pipeline (through `tar_globals = TRUE`). It is recommended to have one chunk per function. For example, to define a `create_plot` function, the following chunk is used (notice how the name of each targets chunk must be unique):
+In a classic `targets` pipeline, it is recommended to save any custom functions created in files stored in the `R/` folder, and then source these files at the top of the `_targets.R` file. This the rendered version of this Target Markdown acts as a technical report, it is useful to display here the code of these functions. Alternatively, functions could be saved into files in a `R/` folder, then sourced at the beginning of the pipeline by adding to the previous `set-globals` chunk the line:
 
-````
-`r ''````{targets globals-create_plot, tar_globals = TRUE}
-create_plot <- function(data) {
-  ggplot(data) +
-    geom_histogram(aes(x = Ozone), bins = 12)+
-    labs(x = "coucou")
-}
+```{r, eval = FALSE}
+## Source all R scripts stored in the R folder
+lapply(list.files("R", full.names = TRUE), source)
 ```
-````
+
+For the first option, the 'Helper functions' section in the Target Markdown is the place to create all custom functions. Again, the target chunks in this section define globals for the pipeline (through `tar_globals = TRUE`). It is recommended to have one chunk per function. For example, to define a `create_plot` function, the following chunk is used (notice how the name of each targets chunk must be unique):
+
+    `r ''````{targets globals-create_plot, tar_globals = TRUE}
+    create_plot <- function(data) {
+      ggplot(data) +
+        geom_histogram(aes(x = Ozone), bins = 12)
+    }
+    ```
+
+### Child documents
+
+It is common in a data science project that the analysis becomes quite long, and keeping all code into one single Rmarkdown becomes cumbersome. In addition, the analysis can often be split into well-defined sections, such as data cleaning, EDA, model fitting, etc. In both cases, it would be preferable to have one Markdown file per analysis, so that when working on a particular section, we don't have to scroll through the entire master file to find the section of interest. However, the different analysis sections should still be part of the same targets pipeline, so that when one section is modified, all other sections should be updated accordingly. In addition it's convenient to have the rendered technical report being built as one document, with all the code used for the different analysis sections. 
+
+This is where the [`child` option](https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html) from RMarkdown becomes really handy. It is possible to create a new RMarkdown document to work on a specific analysis section, and then to include it in the master Targets Markdown through a child chunk. For example, the `create_project_folder()` function creates a separate RMarkdown file for data cleaning, called `data_cleaning.Rmd`. Notice how this child document doesn't have a YAML header, and instead starts with a first level header.
+
+The other advantage of using child documents is that you can render their inclusion in the master file conditional, by passing a conditional statement to the `child` chunk option. For example, with:
+
+    `r ''````{r conditional-child, child = if(include_eda) 'eda.Rmd'}
+    ```
+
+is only included if the variable `include_eda` (defined in the master document) is `TRUE`. This `include_eda` could for example be a parameter of the master Targets Markdown. It's really convenient to render projects targeted to different audiences, in order to only display relevant information.
+
+### The .gitignore
+
+The `create_project_folder()` function also adds a `.gitignore` file to the folder. It contains the following lines:
+
+```
+## R files
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+
+data/
+
+## Ignore _targets output
+_targets/
+```
+
+The usual R fils should be ignored when committing to Git. In addition, this .gitignore excludes the `data/` folder from the Git repository. This is to avoid issues due to very large data files, or sensitive data. It also excludes the `_targets/` folder, which is where metadata and targets are stored upon executing the targets pipeline. There is no need for all this to be version-controlled because 1) the files can also get really large and 2) having the code to reproduce the pipeline makes all this content reproducible.
+
+Note that if a `.gitignore` file is already present in the folder, the function will instead append the lines shown above to the existing `.gitignore`. This avoids overriding existing settings.
+
+
+## Analysis workflow
+
+In summary, this is how this template directory is meant to be used:
+
+### Setting up the project folder
+
+- Create a new Git(Hub) repository.
+- Set up a RStudio project from this Git(Hub) repo.
+- Initialise a `renv` environment by running `renv::init()` in the folder (alternatively when creating the RStudio project there should be an option to use `renv` that can be ticked).
+- Run the `create_project_folder()` function. This will populate the GitHub folder with the different folders and template files.
+- Copy your raw data into the `data/raw/` folder (you could even make these files read-only to make sure that you can't mess up with them by accident!).
+
+
+### Building the analysis pipeline
+
+- Edit the `make_targets_pipeline.Rmd` document to add the packages to be used, and any helper functions.
+- Create a child document and use it to construct the pipeline.
+- Create a RMarkdown report in the `reports/` folder to display the results of the analysis.
+- Knit the `make_targets_pipeline.Rmd` document.
+- Check the targets pipeline with `targets::tar_visnetwork()` and `targets::tar_manifest()`.
+- Run the pipeline with `targets::tar_make()`.

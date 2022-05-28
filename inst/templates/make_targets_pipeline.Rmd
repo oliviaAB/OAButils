@@ -47,8 +47,7 @@ ggplot2::theme_update(legend.position = "bottom")
 ```{targets globals-create_plot, tar_globals = TRUE}
 create_plot <- function(data) {
   ggplot(data) +
-    geom_histogram(aes(x = Ozone), bins = 12)+
-    labs(x = "coucou")
+    geom_histogram(aes(x = Ozone), bins = 12)
 }
 ```
 
