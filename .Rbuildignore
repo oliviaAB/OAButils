@@ -7,3 +7,5 @@
 ^pkgdown$
 ^\.github$
 ^README\.Rmd$
+^man/figures/make_hex_sticker\.R$
+^man/figures/OAButils\.png$
